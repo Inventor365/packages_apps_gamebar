@@ -32,7 +32,10 @@ binder_call(gamebar_app, gpuservice)
 # Allow reading thermal sensor data
 r_dir_file(gamebar_app, sysfs_thermal)
 allow gamebar_app sysfs_thermal:file { read open };
-allow gamebar_app sysfs:file { read open };
-allow gamebar_app sysfs:file { read open getattr ioctl };
+# No generic sysfs: coredomain may not read unlabelled sysfs
+# (system/sepolicy coredomain.te). The nodes GameBar reads have their own
+# types: thermal zones above, CPU frequencies (sysfs_devices_system_cpu,
+# readable by every domain), and the vendor nodes granted in
+# vendor/gamebar_app.te (FPS, GPU, battery).
 allow gamebar_app proc_stat:file r_file_perms;
 allow gamebar_app system_server:binder { call transfer };
