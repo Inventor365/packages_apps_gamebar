@@ -4,7 +4,9 @@
 on boot
     # FPS measurement path (adjust paths)
     chown system graphics /sys/class/drm/sde-crtc-0/measured_fps
-    chmod 0660 /sys/class/drm/sde-crtc-0/measured_fps
+    # World-readable as the kernel creates it: the QTI perf HAL (root, no
+    # group graphics) reads it for its FPS meter (Silky Scrolls, QGPE).
+    chmod 0664 /sys/class/drm/sde-crtc-0/measured_fps
 
     # Battery temperature path (adjust paths)
     chown system system /sys/class/power_supply/battery/temp
